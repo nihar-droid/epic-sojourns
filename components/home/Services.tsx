@@ -11,22 +11,22 @@ const services = [
   {
     title: "Corporate MICE",
     desc: "...",
-    image: "/images/services/mice.jpg",
+    image: "/images/Services/MICE.jpg",
   },
   {
     title: "Destination Weddings",
     desc: "...",
-    image: "/images/services/wedding.jpg",
+    image: "/images/Services/wedding.jpg",
   },
   {
     title: "Domestic & International Tours",
     desc: "...",
-    image: "/images/services/tours.jpg",
+    image: "/images/Services/Tours.jpg",
   },
   {
     title: "Visa Assistance",
     desc: "...",
-    image: "/images/services/visa.jpg",
+    image: "/images/Services/visa.jpg",
   },
 ];
 
