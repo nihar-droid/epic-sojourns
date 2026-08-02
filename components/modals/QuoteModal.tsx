@@ -4,31 +4,37 @@ import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { useQuote } from "@/context/QuoteContext";
 
+const initialForm = {
+  fullName: "",
+  email: "",
+  phone: "",
+  service: "",
+  destination: "",
+  travelDate: "",
+  travellers: "",
+  budget: "",
+  message: "",
+};
+
 export default function QuoteModal() {
   const { isOpen, closeQuote } = useQuote();
+
   const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    phone: "",
-    service: "",
-    destination: "",
-    travelDate: "",
-    travellers: "",
-    budget: "",
-    message: "",
-  });
+  const [formData, setFormData] = useState(initialForm);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >,
+    >
   ) => {
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
   };
-  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const validateStep1 = () => {
     const newErrors: Record<string, string> = {};
@@ -54,6 +60,13 @@ export default function QuoteModal() {
     return Object.keys(newErrors).length === 0;
   };
 
+  const handleClose = () => {
+    setStep(1);
+    setErrors({});
+    setSuccess(false);
+    closeQuote();
+  };
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -69,8 +82,7 @@ export default function QuoteModal() {
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        setStep(1);
-        closeQuote();
+        handleClose();
       }
     };
 
@@ -79,26 +91,51 @@ export default function QuoteModal() {
     return () => {
       window.removeEventListener("keydown", handleKey);
     };
-  }, [closeQuote]);
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/quote", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        setSuccess(true);
+        setFormData(initialForm);
+
+        setTimeout(() => {
+          handleClose();
+        }, 2000);
+      } else {
+        alert("Failed to send quote request.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-999 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
-      <div
-        onClick={() => {
-          setStep(1);
-          closeQuote();
-        }}
-        className="absolute inset-0"
-      />
+    <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
+      <div onClick={handleClose} className="absolute inset-0" />
 
-      <div className="relative w-full max-w-5xl max-h-[95vh] overflow-y-auto rounded-4xl bg-white p-10 shadow-2xl animate-in fade-in zoom-in duration-300">
+      <div className="relative w-full max-w-5xl max-h-[95vh] overflow-y-auto rounded-[32px] bg-white p-10 shadow-2xl">
         <button
-          onClick={() => {
-            setStep(1);
-            closeQuote();
-          }}
+          onClick={handleClose}
           className="absolute right-6 top-6 rounded-full p-2 hover:bg-gray-100"
         >
           <X size={24} />
@@ -116,6 +153,7 @@ export default function QuoteModal() {
           Tell us about your travel plans and our experts will get in touch with
           you shortly.
         </p>
+
         <div className="mt-8">
           <div className="flex justify-between text-sm text-slate-500 mb-3">
             <span>Step {step} of 2</span>
@@ -131,85 +169,96 @@ export default function QuoteModal() {
           </div>
         </div>
 
-        <form className="mt-10">
+        <form className="mt-10" onSubmit={handleSubmit}>
           {step === 1 && (
             <div className="space-y-5">
               <div className="grid md:grid-cols-2 gap-5">
-                <input
-                  name="fullName"
-                  value={formData.fullName}
-                  onChange={handleChange}
-                  type="text"
-                  placeholder="Full Name *"
-                  className={`rounded-xl border px-5 py-4 outline-none transition ${
-                    errors.fullName
-                      ? "border-red-500"
-                      : "border-gray-300 focus:border-[#D4AF37]"
-                  }`}
-                />
-                {errors.fullName && (
-                  <p className="text-sm text-red-500 mt-1">{errors.fullName}</p>
-                )}
+                <div>
+                  <input
+                    name="fullName"
+                    value={formData.fullName}
+                    onChange={handleChange}
+                    type="text"
+                    placeholder="Full Name *"
+                    className={`w-full rounded-xl border px-5 py-4 outline-none transition ${
+                      errors.fullName
+                        ? "border-red-500"
+                        : "border-gray-300 focus:border-[#D4AF37]"
+                    }`}
+                  />
+                  {errors.fullName && (
+                    <p className="text-sm text-red-500 mt-1">
+                      {errors.fullName}
+                    </p>
+                  )}
+                </div>
 
-                <input
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  type="email"
-                  placeholder="Email Address *"
-                  className={`rounded-xl border px-5 py-4 outline-none transition ${
-                    errors.email
-                      ? "border-red-500"
-                      : "border-gray-300 focus:border-[#D4AF37]"
-                  }`}
-                />
-                {errors.email && (
-                  <p className="text-sm text-red-500 mt-1">{errors.email}</p>
-                )}
+                <div>
+                  <input
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    type="email"
+                    placeholder="Email Address *"
+                    className={`w-full rounded-xl border px-5 py-4 outline-none transition ${
+                      errors.email
+                        ? "border-red-500"
+                        : "border-gray-300 focus:border-[#D4AF37]"
+                    }`}
+                  />
+                  {errors.email && (
+                    <p className="text-sm text-red-500 mt-1">
+                      {errors.email}
+                    </p>
+                  )}
+                </div>
               </div>
 
               <div className="grid md:grid-cols-2 gap-5">
-                <input
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  type="tel"
-                  placeholder="Phone Number *"
-                  className={`rounded-xl border px-5 py-4 outline-none transition ${
-                    errors.phone
-                      ? "border-red-500"
-                      : "border-gray-300 focus:border-[#D4AF37]"
-                  }`}
-                />
-                {errors.phone && (
-                  <p className="text-sm text-red-500 mt-1">{errors.phone}</p>
-                )}
+                <div>
+                  <input
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    type="tel"
+                    placeholder="Phone Number *"
+                    className={`w-full rounded-xl border px-5 py-4 outline-none transition ${
+                      errors.phone
+                        ? "border-red-500"
+                        : "border-gray-300 focus:border-[#D4AF37]"
+                    }`}
+                  />
+                  {errors.phone && (
+                    <p className="text-sm text-red-500 mt-1">
+                      {errors.phone}
+                    </p>
+                  )}
+                </div>
 
-                <select
-                  name="service"
-                  value={formData.service}
-                  onChange={handleChange}
-                  className={`rounded-xl border px-5 py-4 outline-none transition ${
-                    errors.service
-                      ? "border-red-500"
-                      : "border-gray-300 focus:border-[#D4AF37]"
-                  }`}
-                >
-                  <option>Select Service</option>
-
-                  <option>Corporate MICE</option>
-
-                  <option>Destination Wedding</option>
-
-                  <option>Domestic Tour</option>
-
-                  <option>International Tour</option>
-
-                  <option>Visa Assistance</option>
-                </select>
-                {errors.service && (
-                  <p className="text-sm text-red-500 mt-1">{errors.service}</p>
-                )}
+                <div>
+                  <select
+                    name="service"
+                    value={formData.service}
+                    onChange={handleChange}
+                    className={`w-full rounded-xl border px-5 py-4 outline-none transition ${
+                      errors.service
+                        ? "border-red-500"
+                        : "border-gray-300 focus:border-[#D4AF37]"
+                    }`}
+                  >
+                    <option value="">Select Service</option>
+                    <option>Corporate MICE</option>
+                    <option>Destination Wedding</option>
+                    <option>Domestic Tour</option>
+                    <option>International Tour</option>
+                    <option>Visa Assistance</option>
+                  </select>
+                  {errors.service && (
+                    <p className="text-sm text-red-500 mt-1">
+                      {errors.service}
+                    </p>
+                  )}
+                </div>
               </div>
 
               <button
@@ -263,14 +312,10 @@ export default function QuoteModal() {
                   onChange={handleChange}
                   className="rounded-xl border border-gray-300 px-5 py-4 outline-none focus:border-[#D4AF37]"
                 >
-                  <option>Estimated Budget</option>
-
+                  <option value="">Estimated Budget</option>
                   <option>₹50,000 - ₹1 Lakh</option>
-
                   <option>₹1 - ₹3 Lakhs</option>
-
                   <option>₹3 - ₹5 Lakhs</option>
-
                   <option>₹5 Lakhs+</option>
                 </select>
               </div>
@@ -284,6 +329,12 @@ export default function QuoteModal() {
                 className="w-full rounded-xl border border-gray-300 px-5 py-4 outline-none focus:border-[#D4AF37]"
               />
 
+              {success && (
+                <div className="rounded-xl bg-green-100 border border-green-300 p-4 text-green-700">
+                  Your quote request has been sent successfully.
+                </div>
+              )}
+
               <div className="flex gap-4">
                 <button
                   type="button"
@@ -295,9 +346,10 @@ export default function QuoteModal() {
 
                 <button
                   type="submit"
-                  className="w-1/2 rounded-full bg-[#D4AF37] py-4 font-semibold text-[#0F2747]"
+                  disabled={loading}
+                  className="w-1/2 rounded-full bg-[#D4AF37] py-4 font-semibold text-[#0F2747] disabled:opacity-60"
                 >
-                  Request Quote
+                  {loading ? "Sending..." : "Request Quote"}
                 </button>
               </div>
             </div>
