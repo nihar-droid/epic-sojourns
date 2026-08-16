@@ -251,7 +251,7 @@ export default function QuoteModal() {
                     <option>Destination Wedding</option>
                     <option>Domestic Tour</option>
                     <option>International Tour</option>
-                    <option>Visa Assistance</option>
+                    <option>Hotel Consultancy</option>
                   </select>
                   {errors.service && (
                     <p className="text-sm text-red-500 mt-1">

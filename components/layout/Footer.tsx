@@ -27,7 +27,7 @@ export default function Footer() {
               <li>Corporate MICE</li>
               <li>Destination Weddings</li>
               <li>International Tours</li>
-              <li>Visa Assistance</li>
+              <li>Hotel Consultancy</li>
             </ul>
           </div>
 

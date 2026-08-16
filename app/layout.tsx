@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   },
 
   description:
-    "Epic Sojourns specializes in Corporate MICE, Destination Weddings, Luxury Holidays, Domestic & International Tour Packages, and Visa Assistance.",
+    "Epic Sojourns specializes in Corporate MICE, Destination Weddings, Luxury Holidays, Domestic & International Tour Packages, and Hotel Consultancy.",
 
   keywords: [
     "Epic Sojourns",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     "Destination Wedding",
     "Luxury Travel",
     "Travel Agency India",
-    "Visa Assistance",
+    "Hotel Consultancy",
     "International Tours",
     "Domestic Tours",
     "Business Travel",
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Epic Sojourns",
     description:
-      "Luxury travel experiences, destination weddings, corporate MICE and visa assistance.",
+      "Luxury travel experiences, destination weddings, corporate MICE and hotel consultancy.",
 
     url: "https://epicsojourns.com",
 

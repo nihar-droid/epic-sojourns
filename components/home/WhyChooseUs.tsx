@@ -5,7 +5,7 @@ const features = [
   "Tailor-Made Luxury Itineraries",
   "Destination Wedding Specialists",
   "Corporate MICE Experts",
-  "Visa & Documentation Assistance",
+  "Hotel Consultancy",
   "24/7 Travel Support",
   "End-to-End Journey Management",
 ];

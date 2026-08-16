@@ -8,54 +8,99 @@ export async function POST(req: Request) {
     const body = await req.json();
 
     const {
-  fullName,
-  email,
-  phone,
-  service,
-  destination,
-  travelDate,
-  travellers,
-  budget,
-  message,
-} = body;
+      fullName,
+      email,
+      phone,
+      service,
+      destination,
+      travelDate,
+      travellers,
+      budget,
+      message,
+    } = body;
+
+    if (!fullName || !email || !phone || !service) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Please provide all required information.",
+        },
+        { status: 400 }
+      );
+    }
 
     await resend.emails.send({
       from: "Epic Sojourns <noreply@epicsojourns.com>",
-      to: ["info.epicsojourns@gmail.com"], // <-- Replace with your email
-      subject: `New Quote Request - ${fullName}`,
+      to: ["info.epicsojourns@gmail.com"],
+      replyTo: email,
+      subject: `New Quote Request — ${fullName}`,
+
       html: `
-<h2>New Quote Request</h2>
+        <div style="font-family: Arial, sans-serif; max-width: 700px; margin: auto;">
 
-<hr/>
+          <h2 style="color: #0F2747;">
+            New Quote Request
+          </h2>
 
-<p><strong>Name:</strong> ${fullName}</p>
+          <hr />
 
-<p><strong>Email:</strong> ${email}</p>
+          <h3>Personal Details</h3>
 
-<p><strong>Phone:</strong> ${phone}</p>
+          <p>
+            <strong>Name:</strong> ${fullName}
+          </p>
 
-<p><strong>Service:</strong> ${service}</p>
+          <p>
+            <strong>Email:</strong> ${email}
+          </p>
 
-<p><strong>Destination:</strong> ${destination}</p>
+          <p>
+            <strong>Phone:</strong> ${phone}
+          </p>
 
-<p><strong>Travel Date:</strong> ${travelDate}</p>
+          <h3>Trip Details</h3>
 
-<p><strong>Travellers:</strong> ${travellers}</p>
+          <p>
+            <strong>Service:</strong> ${service}
+          </p>
 
-<p><strong>Budget:</strong> ${budget}</p>
+          <p>
+            <strong>Destination:</strong> ${destination || "Not specified"}
+          </p>
 
-<p><strong>Message:</strong></p>
+          <p>
+            <strong>Travel Date:</strong> ${travelDate || "Not specified"}
+          </p>
 
-<p>${message}</p>
-`,
+          <p>
+            <strong>Travellers:</strong> ${travellers || "Not specified"}
+          </p>
+
+          <p>
+            <strong>Budget:</strong> ${budget || "Not specified"}
+          </p>
+
+          <h3>Message</h3>
+
+          <p>
+            ${message || "No additional message provided."}
+          </p>
+
+        </div>
+      `,
     });
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({
+      success: true,
+    });
   } catch (error) {
-    console.error(error);
+    console.error("Quote submission error:", error);
 
     return NextResponse.json(
-      { success: false, error: "Failed to send email." },
+      {
+        success: false,
+        error: "Failed to send quote request.",
+      },
       { status: 500 }
     );
   }

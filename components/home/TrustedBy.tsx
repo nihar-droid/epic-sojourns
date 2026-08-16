@@ -4,7 +4,7 @@ const companies = [
   "Corporate Events",
   "Destination Weddings",
   "Luxury Holidays",
-  "Visa Assistance",
+  "Hotel Consultancy",
 ];
 
 export default function TrustedBy() {

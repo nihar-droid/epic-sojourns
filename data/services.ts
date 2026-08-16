@@ -31,11 +31,9 @@ export const services = [
     href: "/services/tours",
   },
   {
-    title: "Visa Assistance",
-    description:
-      "End-to-end visa consultation and documentation.",
-    icon: Globe,
-    image: "/images/services/visa.jpg",
-    href: "/services/visa-assistance",
-  },
+  title: "Hotel Consultancy",
+  desc: "With over 30 years of experience, our team provides end-to-end hotel consultancy covering location and land selection, construction planning, operations, and strategic development.",
+  image: "/images/Services/hotel.jpg",
+  icon: Globe,
+},
 ];

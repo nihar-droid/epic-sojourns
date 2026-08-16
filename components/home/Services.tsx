@@ -24,9 +24,9 @@ const services = [
     image: "/images/Services/Tours.jpg",
   },
   {
-    title: "Visa Assistance",
+    title: "Hotel Consultancy",
     desc: "...",
-    image: "/images/Services/visa.jpg",
+    image: "/images/Services/hotel.jpg",
   },
 ];
 

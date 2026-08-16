@@ -44,7 +44,7 @@ export default function Hero() {
             className="mx-auto mt-8 max-w-2xl text-lg md:text-xl leading-8 text-gray-200"
           >
             Corporate MICE • Destination Weddings • Domestic & International
-            Tours • Visa Assistance
+            Tours • Hotel Consultancy
           </motion.p>
 
           <motion.div
