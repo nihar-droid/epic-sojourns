@@ -7,7 +7,7 @@ import { useQuote } from "@/context/QuoteContext";
 export default function CTA() {
     const { openQuote } = useQuote();
   return (
-    <section className="py-24 bg-[#0F2747]">
+    <section id="contact" className="py-24 bg-[#0F2747]">
       <div className="max-w-7xl mx-auto px-6">
         <div className="rounded-[36px] bg-[#D4AF37] px-10 py-16 lg:px-20 lg:py-20 flex flex-col lg:flex-row items-center justify-between gap-10">
 
@@ -42,7 +42,7 @@ export default function CTA() {
             </button>
 
             <Link
-              href="/services"
+              href="/#services"
               className="border-2 border-[#0F2747] text-[#0F2747] hover:bg-[#0F2747] hover:text-white px-8 py-4 rounded-full font-semibold transition"
             >
               Explore Services

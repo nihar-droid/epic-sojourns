@@ -1,5 +1,9 @@
+"use client";
+
+import { useQuote } from "@/context/QuoteContext";
 import Image from "next/image";
 import { CheckCircle } from "lucide-react";
+
 
 const features = [
   "Tailor-Made Luxury Itineraries",
@@ -11,6 +15,7 @@ const features = [
 ];
 
 export default function WhyChoose() {
+  const { openQuote } = useQuote();
   return (
     <section className="bg-[#FAF8F4] py-24">
       <div className="container mx-auto px-6 lg:px-12">
@@ -58,7 +63,7 @@ export default function WhyChoose() {
               ))}
             </div>
 
-            <button className="bg-[#D4AF37] hover:bg-[#C79D24] transition-all duration-300 text-[#0F2747] font-semibold px-8 py-4 rounded-full">
+            <button onClick={openQuote} className="bg-[#D4AF37] hover:bg-[#C79D24] transition-all duration-300 text-[#0F2747] font-semibold px-8 py-4 rounded-full">
               Start Planning →
             </button>
           </div>

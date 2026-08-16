@@ -60,7 +60,7 @@ export default function Hero() {
               Get a Quote
             </button>
 
-            <Button href="/services" variant="outline">
+            <Button href="/#services" variant="outline">
               Explore Services
             </Button>
           </motion.div>

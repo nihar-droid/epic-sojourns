@@ -1,3 +1,6 @@
+"use client";
+
+import { useQuote } from "@/context/QuoteContext";
 import {
   BriefcaseBusiness,
   Heart,
@@ -31,8 +34,9 @@ const services = [
 ];
 
 export default function Services() {
+  const { openQuote } = useQuote();
   return (
-    <section className="py-32 bg-[#F8F8F6]">
+    <section id="services"className="py-32 bg-[#F8F8F6]">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center max-w-3xl mx-auto mb-20">
           <p className="uppercase tracking-[6px] text-[#D4AF37] font-semibold">
@@ -72,7 +76,7 @@ export default function Services() {
 
                   <p className="text-gray-600 leading-8">{service.desc}</p>
 
-                  <button className="mt-8 inline-flex items-center gap-2 font-semibold text-[#0B2545] transition-all group-hover:gap-4 group-hover:text-[#D4AF37]">
+                  <button onClick={openQuote} className="mt-8 inline-flex items-center gap-2 font-semibold text-[#0B2545] transition-all group-hover:gap-4 group-hover:text-[#D4AF37]">
                     Discover More
                     <ArrowRight size={18} />
                   </button>
