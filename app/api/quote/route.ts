@@ -21,7 +21,7 @@ export async function POST(req: Request) {
 
     await resend.emails.send({
       from: "Epic Sojourns <onboarding@resend.dev>",
-      to: ["nihargour@gmail.com"], // <-- Replace with your email
+      to: ["info.epicsojourns@gmail.com"], // <-- Replace with your email
       subject: `New Quote Request - ${fullName}`,
       html: `
 <h2>New Quote Request</h2>
